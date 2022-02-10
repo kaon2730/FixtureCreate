@@ -1,0 +1,78 @@
+package fikstur;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+public class Fixture {
+	public static void createFixture(String[][] dizi) {
+		int teamNumber=dizi.length*dizi[0].length;
+		ArrayList<Match> week = new ArrayList<Match>(); 
+		ArrayList<String> teams = new ArrayList<String>();
+		for(int b=0; b<dizi.length;b++) {
+			for(int c=0; c<dizi[0].length;c++) {
+				teams.add(dizi[b][c]);
+			}
+		}
+		for(int i=0; i<dizi.length;i++) {
+			Random rnd=new Random();
+			for(int j=0; j<dizi[0].length;j++) {
+				int index = rnd.nextInt(teams.size());
+				dizi[i][j]=teams.get(index);
+				teams.remove(index);
+			}
+		}
+		String[][] duplicate = new String[dizi.length][dizi[0].length];
+		for(int round=1; round<teamNumber;round++) {
+		for(int i=0; i<dizi.length;i++) {
+			for(int k=0; k<dizi[0].length; k++) {
+				duplicate[i][k]=dizi[i][k];
+			}
+		}
+		for(int mac =0; mac<dizi[0].length;mac++) {
+			Random rnd=new Random();
+			int mix = rnd.nextInt(2);
+			if(mix<1) {
+				week.add(new Match(dizi[0][mac], dizi[1][mac]));
+			} else {
+				week.add(new Match(dizi[1][mac], dizi[0][mac]));
+			}
+		}
+		for(int i=0; i<dizi.length; i++) {
+			for(int k=0; k<dizi[0].length; k++) {
+				if(i==1 && k!=0) {
+					dizi[i][k-1]= duplicate[i][k];
+				}
+				if(i==0 && k>0 && k<dizi[0].length-1) {
+					dizi[i][k+1]=duplicate[i][k];
+				}
+				if(i==1 && k==0) {
+					dizi[0][1]= duplicate[1][0];
+				}
+				if(i==0 && k==dizi[0].length-1) {
+					dizi[1][k]= duplicate[0][k];
+				}
+			}
+		}
+		
+	}
+			int weekNumber=1;
+			int weekMatchNumber=1;
+			for(Match match : week) {
+				if(weekMatchNumber%(teamNumber/2) ==1) {
+					System.out.println("ROUND " + weekNumber);
+					weekNumber++;
+				}
+				System.out.println(match.getHomeTeam()+ "\tvs\t" + match.getAwayTeam());
+				weekMatchNumber++;
+			}
+			for(Match match : week) {
+				if(weekMatchNumber%(teamNumber/2) ==1) {
+					System.out.println("ROUND " + weekNumber);
+					weekNumber++;
+				}
+				System.out.println(match.getAwayTeam()+ "\tvs\t" + match.getHomeTeam());
+				weekMatchNumber++;
+			}
+		
+	}
+}
