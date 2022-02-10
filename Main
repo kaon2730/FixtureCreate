@@ -29,13 +29,8 @@ public class Main {
 		if(count==1) {
 		teams[1][takimsayisi/2-1]="bay";
 		}
-		for(String [] a: teams) {
-			for(String b: a) {
-				System.out.print(b + " " );
-			}
-			System.out.println();
-		}
 		Fixture.createFixture(teams);
 	}
 
 }
+
